@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espacio de Repaso - FICDE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ficde-azul-dark: #134252;
+            --ficde-azul-light: #2c5c6e;
+            --ficde-naranja: #e68161;
+            --ficde-naranja-hover: #ff9f85;
+            --tarjeta-bg: #f0f4f5;
+            --input-bg: #e2e8eb;
+            --texto-principal: #0f2d38;
+            --texto-secundario: #4a636e;
+            --verde-exito: #2e7d32;
+            --verde-bg: #c8e6c9;
+            --rojo-error: #c62828;
+            --naranja-bg: #ffe0b2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--ficde-azul-dark) 0%, #0a252e 100%);
+            min-height: 100vh;
+            color: var(--texto-principal);
+            padding: 20px;
+            background-attachment: fixed;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo-img { height: 50px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+
+        .module-tag {
+            background: var(--ficde-naranja);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .welcome-card {
+            background: var(--tarjeta-bg);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            border-bottom: 6px solid var(--ficde-naranja);
+            margin-bottom: 30px;
+        }
+
+        .welcome-title {
+            color: var(--ficde-azul-dark);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .fede-avatar-large {
+            width: 140px; height: 140px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: var(--ficde-naranja);
+            padding: 5px;
+            box-shadow: 0 10px 25px rgba(230, 129, 97, 0.5);
+            cursor: pointer;
+            transition: transform 0.3s;
+            overflow: hidden;
+        }
+
+        .fede-avatar-large:hover { transform: scale(1.1); }
+
+        .fede-avatar-large img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid white;
+        }
+
+        .blocks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .block-card {
+            background: var(--tarjeta-bg);
+            padding: 30px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .block-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--ficde-naranja);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .block-icon {
+            font-size: 3rem; margin-bottom: 15px;
+            background: rgba(19, 66, 82, 0.1);
+            width: 70px; height: 70px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; color: var(--ficde-azul-dark);
+        }
+
+        .block-title { color: var(--ficde-azul-dark); font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; }
+
+        .block-desc { color: var(--texto-secundario); font-size: 0.9rem; line-height: 1.5; }
+
+        .activity-screen {
+            display: none;
+            grid-template-columns: 280px 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .activity-screen.active { display: grid; }
+
+        .tutor-sidebar {
+            background: var(--ficde-azul-light);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            position: sticky; top: 20px;
+        }
+
+        .tutor-bubble {
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            color: var(--ficde-azul-dark);
+            margin-top: 20px;
+            position: relative;
+            text-align: left;
+        }
+
+        .tutor-bubble::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            border-width: 0 10px 10px;
+            border-style: solid;
+            border-color: transparent transparent rgba(255,255,255,0.95);
+            transform: translateX(-50%);
+        }
+
+        .activity-content {
+            background: var(--tarjeta-bg);
+            padding: 40px;
+            border-radius: 16px;
+            min-height: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .act-badge {
+            background: var(--ficde-naranja);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .act-title { font-size: 1.8rem; color: var(--ficde-azul-dark); margin: 15px 0; font-weight: 800; }
+
+        .act-instruction { font-size: 1.1rem; color: var(--texto-secundario); margin-bottom: 30px; }
+
+        .student-input {
+            width: 100%;
+            height: 150px;
+            padding: 20px;
+            background: var(--input-bg);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            color: var(--ficde-azul-dark);
+            transition: all 0.3s;
+        }
+
+        .student-input:focus { background: white; border-color: var(--ficde-naranja); outline: none; }
+
+        .fill-input {
+            border: none;
+            border-bottom: 2px solid var(--ficde-naranja);
+            background: transparent;
+            font-weight: 700;
+            color: var(--ficde-azul-dark);
+            text-align: center;
+            width: 150px;
+            font-size: 1.1rem;
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 18px;
+            margin-top: 30px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            background: linear-gradient(90deg, var(--ficde-naranja), #ff9f85);
+            color: white;
+            box-shadow: 0 6px 20px rgba(230, 129, 97, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .btn-action:hover { transform: translateY(-3px); }
+
+        .btn-back {
+            background: transparent;
+            color: var(--texto-secundario);
+            box-shadow: none;
+            border: 2px solid #ccc;
+            margin-top: 15px;
+        }
+
+        .btn-back:hover { background: #e0e0e0; color: var(--ficde-azul-dark); }
+
+        .traffic-row, .checklist-item {
+            background: white;
+            margin-bottom: 12px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .traffic-row:hover, .checklist-item:hover { border-color: var(--ficde-naranja); transform: translateX(5px); }
+
+        .traffic-btn {
+            width: 35px; height: 35px;
+            border-radius: 50%; border: 2px solid #ddd;
+            cursor: pointer;
+            opacity: 0.3;
+        }
+
+        .traffic-btn.active { opacity: 1; transform: scale(1.2); border-color: var(--ficde-azul-dark); }
+
+        .bg-green { background: #4CAF50; }
+
+        .bg-yellow { background: #FFC107; }
+
+        .bg-red { background: #f44336; }
+
+        .check-box {
+            width: 24px; height: 24px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .checklist-item.selected { border-color: var(--ficde-naranja); background: #fff5f0; }
+
+        .checklist-item.selected .check-box { background: var(--ficde-naranja); border-color: var(--ficde-naranja); color: white; }
+
+        .feedback-area {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 12px;
+            display: none;
+            animation: slideUp 0.4s;
+        }
+
+        .feedback-success { background: var(--verde-bg); color: #1b5e20; border-left: 6px solid var(--verde-exito); }
+
+        .feedback-retry { background: var(--naranja-bg); color: #bf360c; border-left: 6px solid #ef6c00; }
+
+        .feedback-fail { background: #cfd8dc; color: #37474f; border-left: 6px solid #455a64; }
+
+        #musicToggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--ficde-naranja);
+            color: white;
+            border: none;
+            cursor: pointer;
+            z-index: 100;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .activity-screen { grid-template-columns: 1fr; }
+            .tutor-sidebar { display: flex; align-items: center; gap: 20px; }
+            .fede-avatar-large { width: 80px; height: 80px; }
+            .tutor-bubble::after { display: none; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- AUDIOS MP3 - Todos en la misma carpeta -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="chill-study-desk-focus-concentration-lofi-451180.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="saludoInicial" preload="auto" src="saludoinicial.mp3"></audio>
+    <audio id="mensaje1Ejercicios" preload="auto" src="mensaje1ejercicios.mp3"></audio>
+    <audio id="mensaje2Ejercicios" preload="auto" src="mensaje2ejercicios.mp3"></audio>
+    <audio id="mensaje3Ejercicios" preload="auto" src="mensaje3ejercicios.mp3"></audio>
+    <audio id="mensaje4Ejercicios" preload="auto" src="mensaje4ejercicios.mp3"></audio>
+    <audio id="respuestaCorrecta" preload="auto" src="respuestacorrecta.mp3"></audio>
+    <audio id="primerError" preload="auto" src="primererror.mp3"></audio>
+    <audio id="segundoError" preload="auto" src="segundoerror.mp3"></audio>
+    <audio id="loLograste" preload="auto" src="lolograste.mp3"></audio>
+
+    <audio id="hoverSound" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.m4a"></audio>
+    <audio id="clickSound" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.m4a"></audio>
+    <audio id="successSound" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.m4a"></audio>
+
+    <button id="musicToggle" onclick="toggleMusic()">🔇</button>
+
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <img src="logo.png" alt="FICDE" class="logo-img" onerror="this.style.display='none'; document.getElementById('altLogo').style.display='block'">
+                <h2 id="altLogo" style="display:none; color:white; font-weight:800;">FICDE</h2>
+            </div>
+            <div class="module-tag">Módulo social media</div>
+        </header>
+
+        <div id="selectionScreen">
+            <div class="welcome-card">
+                <div class="fede-avatar-large" onclick="playAudio('saludoInicial')">
+                    <img src="personaje.gif" alt="Fede">
+                </div>
+                <h1 class="welcome-title">Espacio de Repaso Interactivo</h1>
+                <p style="color: var(--texto-secundario); font-size: 1.1rem;">Donde el conocimiento se convierte en acción</p>
+            </div>
+
+            <div class="blocks-grid">
+                <div class="block-card" onclick="startModule('sintesis')">
+                    <div class="block-icon">🧠</div>
+                    <div class="block-title">Síntesis</div>
+                    <div class="block-desc">Introduce los conceptos básicos de redes sociales y social media, sus características, tipos y relevancia en la vida cotidiana y el marketing.</div>
+                </div>
+
+                <div class="block-card" onclick="startModule('analisis')">
+                    <div class="block-icon">🔍</div>
+                    <div class="block-title">Análisis Crítico</div>
+                    <div class="block-desc">Impacto del uso de redes sociales, sobre riesgos, beneficios, percepción personal y responsabilidad del usuario.</div>
+                </div>
+
+                <div class="block-card" onclick="startModule('escenarios')">
+                    <div class="block-icon">🎬</div>
+                    <div class="block-title">Escenarios</div>
+                    <div class="block-desc">Uso de redes sociales para reflexionar sobre hábitos, vínculos, estudio, trabajo y toma de decisiones según el contexto.</div>
+                </div>
+
+                <div class="block-card" onclick="startModule('practica')">
+                    <div class="block-icon">⚡</div>
+                    <div class="block-title">Práctica</div>
+                    <div class="block-desc">Uso responsable de redes sociales en la vida personal, educativa y laboral.</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="activityScreen" class="activity-screen">
+            <div class="tutor-sidebar">
+                <div class="fede-avatar-large" style="width: 100px; height: 100px; border-color: var(--ficde-naranja);" onclick="replayTutorMessage()">
+                    <img src="personaje.gif" alt="Fede">
+                </div>
+                <div style="flex:1;">
+                    <h3 style="color:var(--ficde-naranja); margin-bottom:5px;">Tutor Fede</h3>
+                    <div class="tutor-bubble" id="tutorMessage"></div>
+                </div>
+            </div>
+
+            <div class="activity-content" id="activityContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // ===== GESTIÓN DE AUDIO MP3 =====
+        const audioFiles = {
+            saludoInicial: document.getElementById('saludoInicial'),
+            mensaje1: document.getElementById('mensaje1Ejercicios'),
+            mensaje2: document.getElementById('mensaje2Ejercicios'),
+            mensaje3: document.getElementById('mensaje3Ejercicios'),
+            mensaje4: document.getElementById('mensaje4Ejercicios'),
+            correcto: document.getElementById('respuestaCorrecta'),
+            error1: document.getElementById('primerError'),
+            error2: document.getElementById('segundoError'),
+            lolograste: document.getElementById('loLograste')
+        };
+
+        function playAudio(audioKey) {
+            if (audioFiles[audioKey]) {
+                audioFiles[audioKey].currentTime = 0;
+                audioFiles[audioKey].play().catch(err => console.log('Error al reproducir audio:', err));
+            }
+        }
+
+        const bgMusic = document.getElementById('bgMusic');
+        const clickSoundEl = document.getElementById('clickSound');
+        const successSoundEl = document.getElementById('successSound');
+        const hoverSoundEl = document.getElementById('hoverSound');
+
+        let musicOn = false;
+        let audioUnlocked = false;
+
+        function unlockAudio() {
+            if (audioUnlocked) return;
+            [clickSoundEl, successSoundEl, hoverSoundEl].forEach(a => {
+                a.volume = 0;
+                const p = a.play();
+                if (p) p.then(() => { a.pause(); a.currentTime = 0; a.volume = 1; }).catch(()=>{});
+            });
+            audioUnlocked = true;
+        }
+
+        document.addEventListener('pointerdown', unlockAudio, { once: true });
+        document.addEventListener('keydown', unlockAudio, { once: true });
+
+        function toggleMusic() {
+            unlockAudio();
+            if (!musicOn) {
+                bgMusic.volume = 0.1;
+                bgMusic.play().catch(() => {});
+                document.getElementById('musicToggle').innerText = '🎵';
+            } else {
+                bgMusic.pause();
+                document.getElementById('musicToggle').innerText = '🔇';
+            }
+            musicOn = !musicOn;
+        }
+
+        function playSound(type) {
+            if (!audioUnlocked) return;
+            try {
+                if (type === 'click') { clickSoundEl.currentTime=0; clickSoundEl.volume=0.8; clickSoundEl.play().catch(()=>{}); }
+                if (type === 'success') { successSoundEl.currentTime=0; successSoundEl.volume=0.8; successSoundEl.play().catch(()=>{}); }
+                if (type === 'hover') { hoverSoundEl.currentTime=0; hoverSoundEl.volume=0.2; hoverSoundEl.play().catch(()=>{}); }
+            } catch (e) {}
+        }
+
+        function wireUiSounds() {
+            document.querySelectorAll('.block-card, .btn-action, .checklist-item, .traffic-row, .fede-avatar-large').forEach(el => {
+                if (el.dataset.sound === '1') return;
+                el.dataset.sound = '1';
+                el.addEventListener('mouseenter', () => playSound('hover'));
+                el.addEventListener('click', () => playSound('click'));
+            });
+        }
+
+        window.addEventListener('load', wireUiSounds);
+
+        // ===== NORMALIZACIÓN DE TEXTO =====
+        function normalizar(txt) {
+            return txt
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase();
+        }
+
+        // ===== ACTIVIDADES: validaciones de texto simplificadas ===
+const modules = {
+
+    // ===================== SÍNTESIS =====================
+    sintesis: [
+        {
+            type: 'text',
+            badge: 'Introducción al Social Media',
+            title: 'Qué entendemos por redes sociales',
+            instruction: 'Explica con tus palabras qué son las redes sociales y qué permiten hacer a las personas que las utilizan.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('plataformas') || v.includes('digitales')) c++;
+                if (v.includes('conexión') || v.includes('interacción')) c++;
+                if (v.includes('información') || v.includes('sociales') || v.includes('interactuar')) c++;
+                return c >= 2;
+            },
+            tutor: 'Pensá en qué tienen en común las personas cuando usan una red social.',
+            explanation: 'Las redes sociales son plataformas digitales que permiten a las personas conectarse entre sí, interactuar y compartir información.'
+        },
+        {
+            type: 'text',
+            badge: 'Conceptos fundamentales',
+            title: 'Diferencia entre redes sociales y social media',
+            instruction: 'Explica la diferencia entre el concepto de redes sociales y el de social media.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('concepto')) c++;
+                if (v.includes('amplio') || v.includes('tecnologías')) c++;
+                if (v.includes('digitales') || v.includes('formatos') || v.includes('interactivos')) c++;
+                return c >= 2;
+            },
+            tutor: 'Uno de los conceptos incluye al otro.',
+            explanation: 'El término social media hace referencia al conjunto de tecnologías y espacios digitales que permiten el intercambio y la interacción entre personas, como blogs, videos o sitios interactivos. Las redes sociales forman parte del social media y se enfocan específicamente en la conexión entre personas a través de perfiles y relaciones.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Características principales',
+            title: 'Qué define a una red social',
+            instruction: 'Marcá las afirmaciones que describen correctamente a las redes sociales.',
+            items: [
+                { text: 'Permiten crear un perfil personal', correct: true },
+                { text: 'Facilitan la interacción entre personas', correct: true },
+                { text: 'No permiten compartir información', correct: false },
+                { text: 'Conectan usuarios con intereses o vínculos en común', correct: true }
+            ],
+            tutor: 'Pensá en cómo interactúan los usuarios dentro de una red.',
+            explanation: 'Las redes sociales se caracterizan por la creación de perfiles, la interacción constante y la posibilidad de conectar personas a partir de intereses, relaciones o actividades compartidas.'
+        },
+        {
+            type: 'text',
+            badge: 'Uso cotidiano',
+            title: 'Presencia de las redes sociales en la vida diaria',
+            instruction: 'Explica por qué las redes sociales forman parte de la vida cotidiana de las personas.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('comunicación') || v.includes('información')) c++;
+                if (v.includes('hábitos') || v.includes('digitales')) c++;
+                if (v.includes('cotidiana') || v.includes('información') || v.includes('entretenerse') || v.includes('mantenerse')) c++;
+                return c >= 2;
+            },
+            tutor: 'Piensa en cuántas veces al día se usan.',
+            explanation: 'Las redes sociales forman parte de la vida cotidiana porque permiten comunicarse de manera rápida, acceder a información, entretenerse y mantenerse en contacto con otras personas.'
+        },
+        {
+    type: 'blanks',
+    badge: 'Definiciones clave',
+    title: 'Completar conceptos básicos',
+    instruction: 
+        'Completá las frases.<br><br>' +
+        '1. Las redes sociales son __________ digitales que permiten la interacción entre personas.<br>' +
+        '2. El social media incluye redes sociales y otros __________ interactivos.<br>',
+    blanks: ['plataformas', 'espacios'],
+    tutor: 'Buscá palabras generales que definan función y alcance.',
+    explanation: 'Las redes sociales funcionan como plataformas digitales, mientras que el social media abarca un conjunto más amplio de espacios interactivos donde las personas se comunican y comparten contenido.'
+},
+        {
+            type: 'text',
+            badge: 'Clasificación',
+            title: 'Tipos de redes sociales',
+            instruction: 'Describí brevemente dos tipos de redes sociales según su finalidad.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('personales') || v.includes('profesionales')) &&
+                    (v.includes('entretenimiento') || v.includes('orientadas') || v.includes('construcción') || v.includes('identidad'))
+                );
+            },
+            tutor: 'Piensa para qué se usa cada tipo.',
+            explanation: 'Existen redes sociales personales, orientadas a mantener vínculos sociales y compartir contenidos cotidianos, y redes sociales profesionales, enfocadas en el ámbito laboral, el networking y la construcción de una identidad profesional.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Alcance del social media',
+            title: 'Qué puede incluir el social media',
+            instruction: 'Seleccioná los elementos que pueden formar parte del social media.',
+            items: [
+                { text: 'Blogs', correct: true },
+                { text: 'Videos en línea', correct: true },
+                { text: 'Plataformas de interacción social', correct: true },
+                { text: 'Sitios web con participación del usuario', correct: true },
+                { text: 'Sólo mensajería privada', correct: false }
+            ],
+            tutor: 'Social media no se limita a un solo formato.',
+            explanation: 'La social media incluye distintos formatos digitales que permiten interacción, como blogs, videos, redes sociales y otros sitios donde los usuarios participan activamente.'
+        },
+        {
+            type: 'text',
+            badge: 'Enfoque estratégico',
+            title: 'Redes sociales y marketing',
+            instruction: 'EExplica por qué las redes sociales son importantes para el marketing.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                let c = 0;
+                if (v.includes('marca') || v.includes('público') || v.includes('comunicación')) c++;
+                if (v.includes('importantes') || v.includes('marketing') || v.includes('visibilidad') || v.includes('relaciones')) c++;
+                return c >= 2;
+            },
+            tutor: 'Pensá en la cantidad de personas que usan redes sociales.',
+            explanation: 'Las redes sociales son importantes para el marketing porque permiten a las marcas comunicarse directamente con su público, generar visibilidad y construir relaciones. '
+        },
+        {
+            type: 'traffic',
+            badge: 'Comprensión conceptual',
+            title: 'Afirmaciones sobre social media',
+            instruction: 'Marca afirmaciones correctas o incorrectas',
+            items: [
+                { text: 'El social media solo incluye redes sociales', color: 'red' },
+                { text: 'Las redes sociales forman parte del social media', color: 'green' },
+                { text: 'Las redes sociales permiten interacción entre usuarios', color: 'green' }
+            ],
+            tutor: 'Entender los conceptos ayuda a tomar mejores decisiones.',
+            explanation: 'El social media es un concepto amplio que incluye a las redes sociales y otros espacios interactivos, y las redes sociales se caracterizan por la interacción entre usuarios.'
+        },
+        {
+            type: 'text',
+            badge: 'Cierre conceptua',
+            title: 'Síntesis de ideas principales',
+            instruction: 'Redacta un breve resumen integrando qué son las redes sociales, qué es el social media y por qué son relevantes hoy.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('síntesis') || v.includes('conceptos')) &&
+                    (v.includes('relevancia') || v.includes('plataformas') || v.includes('digitales'))
+                );
+            },
+            tutor: 'Uní todo en un solo texto claro.',
+            explanation: 'Las redes sociales son plataformas digitales que permiten a las personas conectarse e interactuar entre sí, mientras que el social media es un concepto más amplio que incluye distintos espacios digitales de intercambio.'
+        }
+    ],
+
+    // ===================== ANÁLISIS =====================
+    analisis: [
+        {
+            type: 'text',
+            badge: 'Uso consciente del social media',
+            title: 'Impacto del uso de redes sociales',
+            instruction: 'Analizá de qué manera el uso de redes sociales puede impactar positiva y negativamente en las personas.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('comunicación') || v.includes('beneficios')) &&
+                    (v.includes('riesgos') || v.includes('equilibrio') || v.includes('impacto') || v.includes('distracción') || v.includes('dependencia'))
+                );
+            },
+            tutor: 'Pensá tanto en lo que aporta como en los posibles problemas.',
+            explanation: 'El uso de redes sociales puede tener un impacto positivo cuando facilita la comunicación, el acceso a información y la conexión con otras personas. Sin embargo, también puede generar efectos negativos si se usa de manera excesiva o sin criterio, como distracción, dependencia o exposición a contenidos dañinos.'
+        },
+        {
+            type: 'text',
+            badge: 'Comunicación digital',
+            title: 'Calidad de la interacción',
+            instruction: 'Analizá por qué no toda interacción en redes sociales es necesariamente positiva.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('interacción') || v.includes('superficialidad') || v.includes('comunicación')) &&
+                    v.includes('real') &&
+                    (v.includes('profundos') || v.includes('influyen ') || v.includes('relaciones'))
+                );
+            },
+            tutor: 'Pensá en la diferencia entre cantidad y calidad.',
+            explanation: 'Aunque las redes sociales promueven la interacción, no toda interacción es positiva. En muchos casos, los vínculos pueden ser superficiales o reemplazar espacios de comunicación más profundos. Analizar la calidad de las interacciones permite comprender mejor cómo influyen en las relaciones personales.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Análisis del uso de redes',
+            title: 'Señales de un uso poco saludable',
+            instruction: 'Marcá las situaciones que pueden indicar un uso problemático de las redes sociales.',
+            items: [
+                { text: 'Uso constante sin control del tiempo', correct: true },
+                { text: 'Dependencia del reconocimiento externo', correct: true },
+                { text: 'Dificultad para desconectarse', correct: true },
+                { text: 'Uso puntual con objetivos claros', correct: false },
+                { text: 'Interacción ocasional con amigos', correct: false }
+            ],
+            tutor: 'Observa conductas repetitivas y falta de límites.',
+            explanation: 'Un uso poco saludable suele manifestarse cuando las redes interfieren con otras actividades, generan dependencia o afectan el bienestar personal.'
+        },
+        {
+            type: 'text',
+            badge: 'Redes sociales y percepción',
+            title: 'Imagen personal y social media',
+            instruction: 'Analizá cómo las redes sociales pueden influir en la forma en que una persona se percibe a sí misma.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('comparación') || v.includes('imagen')) &&
+                    (v.includes('autoestima') || v.includes('percepción')) &&
+                    (v.includes('seleccionado') || v.includes('comprende') || v.includes('constante'))
+                );
+            },
+            tutor: 'Pensá en la comparación constante con otros perfiles.',
+            explanation: 'Las redes sociales pueden influir en la percepción personal porque muchas veces muestran versiones idealizadas de la realidad. La comparación constante con otros perfiles puede afectar la autoestima si no se comprende que gran parte del contenido está cuidadosamente seleccionado.'
+        },
+        {
+    type: 'blanks',
+    badge: 'Análisis de consecuencias',
+    title: 'Completar ideas clave',
+    instruction: 
+        'Completá las frases.<br><br>' +
+        '1. El uso excesivo de redes sociales puede generar __________ y afectar otras actividades.<br>' +
+        '2. Compararse constantemente con otros perfiles puede impactar en la __________ personal.<br>',
+    blanks: ['dependencia', 'autoestima'],
+    tutor: 'Pensá en efectos emocionales y conductuales.',
+    explanation: 'El análisis crítico permite reconocer que un uso excesivo o comparativo de las redes sociales puede generar consecuencias emocionales y conductuales.'
+},
+        {
+            type: 'text',
+            badge: 'Rol del usuario',
+            title: 'Responsabilidad en el uso del social media',
+            instruction: 'Explica por qué el usuario tiene un rol activo y responsable en el uso de redes sociales.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('decisiones') || v.includes('límites')) &&
+                    (v.includes('responsabilidad') || v.includes('sociales') || v.includes('media') || v.includes('negativamente') || v.includes('interactúa'))
+                );
+            },
+            tutor: 'Pensá en el control que cada persona tiene sobre su uso.',
+            explanation: 'El usuario cumple un rol activo porque decide cuánto tiempo dedica, qué contenidos consume y cómo interactúa en redes sociales. Establecer límites y reflexionar sobre el uso permite aprovechar los beneficios del social media sin que afecte negativamente la vida cotidiana.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Uso responsable',
+            title: 'Buenas prácticas personales',
+            instruction: 'Seleccioná acciones que favorezcan un uso responsable de las redes sociales.',
+            items: [
+                { text: 'Establecer límites de tiempo', correct: true },
+                { text: 'Elegir contenidos de valor', correct: true },
+                { text: 'Compararse constantemente con otros usuarios', correct: false },
+                { text: 'Desconectarse cuando es necesario', correct: true },
+                { text: 'Usar redes sin ningún control', correct: false }
+            ],
+            tutor: 'Pensá en prácticas que cuidan el bienestar.',
+            explanation: 'El uso responsable implica tomar decisiones conscientes, seleccionar contenidos adecuados y establecer límites que protejan el bienestar personal.'
+        },
+        {
+            type: 'text',
+            badge: 'Mirada crítica',
+            title: 'Redes sociales y realidad',
+            instruction: 'Analizá por qué es importante no confundir lo que se muestra en redes con la realidad completa.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('selección') || v.includes('edición') || v.includes('apariencia')) &&
+                    (v.includes('contenidos') || v.includes('interpretaciones') || v.includes('comparaciones') || v.includes('aspectos'))
+                );
+            },
+            tutor: 'Pensá en cómo se construyen los contenidos.',
+            explanation: 'En redes sociales, los contenidos suelen ser seleccionados y editados, mostrando solo ciertos aspectos de la realidad. Comprender esto ayuda a desarrollar una mirada crítica y a evitar interpretaciones erróneas o comparaciones injustas.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Evaluación crítica',
+            title: 'Afirmaciones sobre uso de redes',
+            instruction: 'Marca afirmaciones correctas o incorrectas',
+            items: [
+                { text: 'El uso consciente de redes sociales implica establecer límites', color: 'green' },
+                { text: 'Todo contenido que aparece en redes representa la realidad completa', color: 'red' },
+                { text: 'El análisis crítico ayuda a prevenir efectos negativos del uso de redes', color: 'green' }
+            ],
+            tutor: 'Mirar con criterio es parte del aprendizaje digital.',
+            explanation: 'El análisis crítico permite usar las redes sociales de manera más saludable y reflexiva.'
+        },
+        {
+            type: 'text',
+            badge: 'Reflexión final',
+            title: 'Pensar el social media hoy',
+            instruction: 'Redacta una breve reflexión sobre la importancia de desarrollar una mirada crítica frente al uso de redes sociales.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('reflexión') || v.includes('conciencia')) &&
+                    (v.includes('responsable') || v.includes('crítica') || v.includes('Comprender'))
+                );
+            },
+            tutor: 'Integra beneficios y cuidados en una sola idea.',
+            explanation: 'Desarrollar una mirada crítica frente al uso de redes sociales permite aprovechar sus beneficios sin perder el equilibrio personal. Comprender cómo funcionan, qué muestran y cómo influyen ayuda a usarlas de manera más consciente, responsable y saludable.'
+        }
+    ],
+
+    // ===================== ESCENARIOS =====================
+    escenarios: [
+        {
+            type: 'text',
+            badge: 'Escenario cotidiano',
+            title: 'Uso espontáneo de redes sociales',
+            instruction: 'Si una persona revisa sus redes sociales apenas se despierta, durante las comidas y antes de dormir, sin prestar atención al tiempo que pasa conectada.¿Qué tipo de uso de redes se está dando?',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    v.includes('hábito') ||
+                    (
+                        (v.includes('frecuencia') || v.includes('conciencia') || v.includes('error')) &&
+                        (v.includes('redes') || v.includes('sociales') || v.includes('momentos')) &&
+                        (v.includes('propósito') || v.includes('automático') || v.includes('control') || v.includes('tiempo'))
+                    )
+                );
+            },
+            tutor: 'Observa la repetición y el momento del día.',
+            explanation: 'Uso frecuente y poco consciente de las redes sociales, incorporado como hábito automático en distintos momentos del día, sin un control claro del tiempo ni del propósito del uso.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Análisis de conductas',
+            title: 'Uso responsable o no responsable',
+            instruction: 'Indica si las afirmaciones son correctas o incorrectas según el escenario.',
+            items: [
+                { text: 'Revisar redes sociales de manera automática puede indicar falta de control', color: 'green' },
+                { text: 'Usar redes sociales en todo momento garantiza una mejor comunicación', color: 'red' },
+                { text: 'Ser consciente del tiempo de uso ayuda a un uso más saludable', color: 'green' }
+            ],
+            tutor: 'El problema no es usar redes, sino no registrar cómo se usan.',
+            explanation: 'El escenario invita a reflexionar sobre la importancia de reconocer hábitos automáticos para poder regular el uso de redes sociales.'
+        },
+        {
+            type: 'text',
+            badge: 'Escenario social',
+            title: 'Comparación en redes',
+            instruction: 'Si una usuaria pasa largos períodos observando perfiles de otras personas y comparando su vida con lo que ve en redes sociales.¿qué impacto puede tener esto en la persona?',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('comparación') || v.includes('percepción')) &&
+                    (v.includes('autoestima') || v.includes('negativamente') || v.includes('seleccionados'))
+                );
+            },
+            tutor: 'Pensá en lo que se muestra y en lo que no se muestra.',
+            explanation: 'Este escenario puede impactar negativamente en la autoestima, ya que la comparación constante suele basarse en contenidos seleccionados y editados, que no reflejan la realidad completa de las personas.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Identificación de riesgos',
+            title: 'Señales presentes en el escenario',
+            instruction: 'Marcá los elementos que aparecen en la situación planteada.',
+            items: [
+                { text: 'Comparación constante', correct: true },
+                { text: 'Uso ocasional y equilibrado', correct: false },
+                { text: 'Idealización de otras vidas', correct: true },
+                { text: 'Falta de mirada crítica', correct: true },
+                { text: 'Desconexión voluntaria', correct: false }
+            ],
+            tutor: 'Identifica conductas que afectan la percepción personal.',
+            explanation: 'El escenario muestra señales claras de comparación e idealización que pueden afectar el bienestar emocional si no se analizan críticamente.'
+        },
+        {
+            type: 'text',
+            badge: 'Escenario familiar',
+            title: 'Redes sociales y vínculos',
+            instruction: 'Analizá cómo el uso de redes sociales puede influir en los vínculos familiares.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('comunicación') || v.includes('presencia') || v.includes('vínculos')) &&
+                    (v.includes('constante') || v.includes('familiares') || v.includes('personas'))
+                );
+            },
+            tutor: 'Pensá en la calidad del encuentro.',
+            explanation: 'El uso constante del celular en reuniones familiares puede disminuir la calidad de la comunicación y afectar los vínculos, ya que reduce la atención y la interacción directa entre las personas presentes.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Evaluación del escenario',
+            title: 'Impacto en la comunicación',
+            instruction: 'Indica si las afirmaciones son correctas o incorrectas.',
+            items: [
+                { text: 'El uso excesivo del celular puede interferir en la comunicación presencial', color: 'green' },
+                { text: 'Estar conectado siempre mejora los vínculos familiares', color: 'red' },
+                { text: 'Poner límites al uso de redes puede mejorar la calidad del encuentro', color: 'green' }
+            ],
+            tutor: 'Estar presente también es una forma de comunicar.',
+            explanation: 'El escenario permite reflexionar sobre cómo el uso de redes puede afectar la comunicación cara a cara.'
+        },
+        {
+            type: 'text',
+            badge: 'Escenario educativo',
+            title: 'Redes sociales y estudio',
+            instruction: 'explica qué dificultades pueden aparecer con el uso simultáneo de redes sociales y estudio',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('distracción') || v.includes('atención')) &&
+                    (v.includes('concentración') || v.includes('redes') || v.includes('sociales') || v.includes('calidad'))
+                );
+            },
+            tutor: 'Pensá en el impacto sobre el aprendizaje.',
+            explanation: 'El uso simultáneo de redes sociales y estudio puede generar distracción y disminuir la concentración, afectando la calidad del aprendizaje y el rendimiento académico.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Análisis del escenario educativo',
+            title: 'Consecuencias posibles',
+            instruction: 'Seleccioná las consecuencias que pueden surgir en esta situación.',
+            items: [
+                { text: 'Dificultad para concentrarse', correct: true },
+                { text: 'Organización eficiente del estudio', correct: false },
+                { text: 'Interrupciones constantes', correct: true },
+                { text: 'Menor comprensión del contenido', correct: true },
+                { text: 'Mayor aprovechamiento del tiempo', correct: false }
+            ],
+            tutor: 'Pensá en cómo afecta la atención sostenida.',
+            explanation: 'El escenario evidencia que la multitarea con redes sociales puede perjudicar el proceso de estudio.'
+        },
+        {
+            type: 'text',
+            badge: 'Escenario laboral',
+            title: 'Uso de redes en el trabajo',
+            instruction: 'Analiza un posible riesgo del uso inadecuado de redes sociales en el ámbito laboral.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('productividad') || v.includes('imagen')) &&
+                    (v.includes('responsabilidad') || v.includes('redes') || v.includes('comunicación')) &&
+                    (v.includes('sociales') || v.includes('laboral') || v.includes('imagenes'))
+                );
+            },
+            tutor: 'Pensá en consecuencias profesionales.',
+            explanation: 'Un uso inadecuado de redes sociales en el trabajo puede afectar la productividad y generar una imagen poco profesional, especialmente si interfiere con las tareas o con la comunicación laboral.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Cierre de escenarios',
+            title: 'Reflexión final',
+            instruction: 'Indica si las afirmaciones son correctas o incorrectas.',
+            items: [
+                { text: 'Analizar escenarios ayuda a tomar decisiones más conscientes sobre el uso de redes', color: 'green' },
+                { text: 'El contexto influye en cómo se deben usar las redes sociales', color: 'green' },
+                { text: 'Todos los usos de redes sociales tienen el mismo impacto', color: 'red' }
+            ],
+            tutor: 'Pensar situaciones reales mejora el uso cotidiano.',
+            explanation: 'Los escenarios permiten comprender que el impacto del social media depende del contexto, la intención y el nivel de conciencia del usuario.'
+        }
+    ],
+
+    // ===================== PRÁCTICA =====================
+    practica: [
+        {
+            type: 'checklist',
+            badge: 'Organización del uso',
+            title: 'Acciones para un uso consciente',
+            instruction: 'Marca las acciones que ayudan a mejorar el uso personal de redes sociales.',
+            items: [
+                { text: 'Usar redes sin límites', correct: false },
+                { text: 'Establecer horarios de uso', correct: true },
+                { text: 'Revisar redes mientras se estudia', correct: false },
+                { text: 'Priorizar momentos sin pantalla', correct: true },
+                { text: 'Definir un objetivo al conectarse', correct: true }
+            ],
+            tutor: 'Pensá en acciones que ayuden a organizar mejor el tiempo.',
+            explanation: 'Organizar el uso de redes sociales permite disfrutar de sus beneficios sin que interfieran con otras actividades importantes.'
+        },
+        {
+            type: 'text',
+            badge: 'Aplicación personal',
+            title: 'Registro de uso diario',
+            instruction: 'Describí cómo utilizas las redes sociales en un día habitual y en qué momentos las usás con mayor frecuencia.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('hábitos') || v.includes('tiempo') || v.includes('rutina') || v.includes('sociales')) &&
+                    (v.includes('dormir') || v.includes('Registrar') || v.includes('responsable') || v.includes('frecuencia'))
+                );
+            },
+            tutor: 'Pensá en los momentos del día y el tiempo aproximado.',
+            explanation: 'En un día habitual, las redes sociales suelen usarse en distintos momentos como al despertar, durante pausas o antes de dormir. Registrar estos usos permite tomar conciencia de la frecuencia y del tiempo dedicado, primer paso para un uso más responsable.'
+        },
+        {
+    type: 'blanks',
+    badge: 'Práctica reflexiva',
+    title: 'Completar ideas',
+    instruction: 
+        'Completá las frases.<br><br>' +
+        '1. Un uso responsable de redes sociales implica establecer __________ claros.<br>' +
+        '2. Tomar conciencia del __________ de uso ayuda a mejorar los hábitos digitales.<br>',
+    blanks: ['límites', 'tiempo'],
+    tutor: 'Pensá en control y organización.',
+    explanation: 'El uso responsable se basa en reconocer cuánto tiempo se dedica a las redes y en establecer límites que protejan el equilibrio personal.'
+},
+        {
+            type: 'traffic',
+            badge: 'Decisiones cotidianas',
+            title: 'Acciones en redes sociales',
+            instruction: 'Indicá si las acciones son correctas o incorrectas.',
+            items: [
+                { text: 'Desactivar notificaciones puede ayudar a reducir distracciones', color: 'green' },
+                { text: 'Revisar redes sociales mientras se estudia mejora la concentración', color: 'red' },
+                { text: 'Elegir cuándo conectarse permite un uso más consciente', color: 'green' }
+            ],
+            tutor: 'Elegir cuándo y cómo conectarse también es una decisión.',
+            explanation: 'Las pequeñas decisiones diarias influyen directamente en la calidad del uso de las redes sociales.'
+        },
+        {
+            type: 'text',
+            badge: 'Aplicación práctica',
+            title: 'Uso de redes en el estudio',
+            instruction: 'Explica una estrategia concreta para evitar distracciones de redes sociales mientras estudiás.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('concentración') || v.includes('estrategia')) &&
+                    (v.includes('foco') || v.includes('posible') || v.includes('habitación') || v.includes('redes'))
+                );
+            },
+            tutor: 'Pensá en algo simple y posible.',
+            explanation: 'Una estrategia posible es estudiar con el celular en silencio o en otra habitación, definiendo previamente un tiempo de estudio sin interrupciones y un momento específico para revisar redes.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Uso responsable',
+            title: 'Hábitos saludables',
+            instruction: 'Seleccioná hábitos que favorecen un uso saludable de redes sociales.',
+            items: [
+                { text: 'Hacer pausas digitales', correct: true },
+                { text: 'Compararse constantemente con otros', correct: false },
+                { text: 'Usar redes antes de dormir sin control', correct: false },
+                { text: 'Priorizar la interacción presencial', correct: true },
+                { text: 'Elegir contenidos de valor', correct: true }
+            ],
+            tutor: 'Pensá en hábitos que cuidan el bienestar.',
+            explanation: 'Los hábitos saludables permiten integrar las redes sociales sin que afecten negativamente la vida cotidiana.'
+        },
+        {
+            type: 'text',
+            badge: 'Contexto laboral',
+            title: 'Uso profesional de redes',
+            instruction: 'Explica una conducta adecuada en el uso de redes sociales dentro de un contexto laboral.',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('responsabilidad') || v.includes('imagen') || v.includes('profesionalismo')) &&
+                    (v.includes('conducta') || v.includes('contenidos') || v.includes('percepción') || v.includes('profesional'))
+                );
+            },
+            tutor: 'Pensá en cómo impacta lo que se publica.',
+            explanation: 'Una conducta adecuada es usar redes sociales con moderación durante el horario laboral y cuidar los contenidos publicados, ya que pueden influir en la imagen profesional y en la percepción de terceros.'
+        },
+        {
+            type: 'traffic',
+            badge: 'Evaluación práctica',
+            title: 'Uso responsable de redes',
+            instruction: 'Indica si las afirmaciones son correctas o incorrectas.',
+            items: [
+                { text: 'El uso responsable de redes sociales requiere reflexión y decisión', color: 'green' },
+                { text: 'Aplicar límites mejora la experiencia digital', color: 'green' },
+                { text: 'No es necesario pensar cómo se usan las redes sociales', color: 'red' }
+            ],
+            tutor: 'La práctica diaria define el hábito.',
+            explanation: 'Reflexionar y tomar decisiones conscientes permite construir una relación más saludable con las redes sociales.'
+        },
+        {
+            type: 'text',
+            badge: 'Práctica profesional',
+            title: 'Completar conceptos',
+            instruction: 'Explica cómo el uso moderado y consciente de redes influye en el desempeño laboral',
+            validation: (raw) => {
+                const v = normalizar(raw);
+                return (
+                    (v.includes('uso') || v.includes('redes') || v.includes('imágen')) &&
+                    (v.includes('desempeño') || v.includes('moderado ') || v.includes('sociales')) &&
+                    (v.includes('imagen') || v.includes('desempeño') || v.includes('laboral'))
+                );
+            },
+            tutor: 'Pensá en límites y consecuencias.',
+            explanation: 'El uso moderado y consciente de redes sociales ayuda a cuidar la imagen profesional y el desempeño laboral.'
+        },
+        {
+            type: 'checklist',
+            badge: 'Cierre práctico',
+            title: 'Compromiso personal',
+            instruction: 'Marcá acciones que reflejen un compromiso personal para mejorar el uso de redes sociales.',
+            items: [
+                { text: 'Reducir el tiempo de uso diario', correct: true },
+                { text: 'Consumir contenidos sin criterio', correct: false },
+                { text: 'Establecer momentos sin pantalla', correct: true },
+                { text: 'Elegir contenidos que aporten valor', correct: true },
+                { text: 'Usar redes sin límites ni control', correct: false }
+            ],
+            tutor: 'Pensá en hábitos concretos que puedas sostener en el tiempo.',
+            explanation: 'El compromiso personal se fortalece cuando se traduce en acciones conscientes, realistas y orientadas a un uso equilibrado de las redes sociales.'
+        }
+    ]
+};
+
+        let currentModule = '';
+        let currentIndex = 0;
+        let attemptCount = 0;
+        let lastAudioModule = null;
+
+        // ===== MAPEO DE MÓDULOS A AUDIOS =====
+        const moduloAudioMap = {
+            'sintesis': 'mensaje1',
+            'analisis': 'mensaje2',
+            'escenarios': 'mensaje3',
+            'practica': 'mensaje4'
+        };
+
+        function startModule(id) {
+            playSound('click');
+            currentModule = id;
+            currentIndex = 0;
+            attemptCount = 0;
+            lastAudioModule = id;
+
+            // Reproducir el audio del módulo correspondiente
+            const audioKey = moduloAudioMap[id];
+            if (audioKey) {
+                playAudio(audioKey);
+            }
+
+            document.getElementById('selectionScreen').style.display = 'none';
+            document.getElementById('activityScreen').classList.add('active');
+
+            setTimeout(loadActivity, 300);
+        }
+
+        function loadActivity() {
+            attemptCount = 0;
+
+            if (currentIndex >= modules[currentModule].length) {
+                // Reproducir "lolograste.mp3" al terminar TODAS las preguntas
+                playAudio('lolograste');
+                playSound('success');
+                alert('¡Excelente! Completaste este bloque.');
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+                return;
+            }
+
+            const data = modules[currentModule][currentIndex];
+            const container = document.getElementById('activityContainer');
+
+            const msg = `Pregunta ${currentIndex + 1} de ${modules[currentModule].length}: ${data.tutor}`;
+            document.getElementById('tutorMessage').innerText = msg;
+
+            let html = `<span class="act-badge">${data.badge}</span>
+                        <h2 class="act-title">${data.title}</h2>
+                        <p class="act-instruction">${data.instruction}</p>`;
+
+            if (data.type === 'text') {
+                html += `<textarea id="txtInput" class="student-input" placeholder="Escribe tu respuesta con tus palabras..."></textarea>`;
+            } else if (data.type === 'blanks') {
+                html += `<div style="font-size:1.2rem; line-height:2.5;">`;
+                data.blanks.forEach((b, i) => {
+                    html += `${i + 1}. <input type="text" class="fill-input" data-ans="${b}"> <br>`;
+                });
+                html += `</div>`;
+            } else if (data.type === 'traffic') {
+                data.items.forEach((item, i) => {
+                    html += `<div class="traffic-row" id="row-${i}">
+                                <span>${item.text}</span>
+                                <div style="display:flex; gap:10px;">
+                                    <div class="traffic-btn bg-green" onclick="selTraffic(${i}, 'green')"></div>
+                                    <div class="traffic-btn bg-yellow" onclick="selTraffic(${i}, 'yellow')"></div>
+                                    <div class="traffic-btn bg-red" onclick="selTraffic(${i}, 'red')"></div>
+                                </div>
+                            </div>`;
+                });
+            } else if (data.type === 'checklist') {
+                data.items.forEach((item) => {
+                    html += `<div class="checklist-item" onclick="toggleCheck(this)" data-correct="${item.correct}">
+                                <div class="check-box"></div>
+                                <span>${item.text}</span>
+                            </div>`;
+                });
+            }
+
+            html += `<div id="feedback" class="feedback-area"></div>
+                     <button id="btnCheck" class="btn-action" onclick="validate()">Verificar respuesta</button>
+                     <button class="btn-action btn-back" onclick="location.reload()">Salir al menú</button>`;
+
+            container.innerHTML = html;
+            wireUiSounds();
+        }
+
+        let trafficAns = {};
+
+        function selTraffic(idx, color) {
+            trafficAns[idx] = color;
+            const row = document.getElementById(`row-${idx}`);
+            row.querySelectorAll('.traffic-btn').forEach(b => b.classList.remove('active'));
+            row.querySelector(`.bg-${color}`).classList.add('active');
+            playSound('click');
+        }
+
+        function toggleCheck(el) {
+            el.classList.toggle('selected');
+            el.querySelector('.check-box').innerText = el.classList.contains('selected') ? '✓' : '';
+
+            if (el.classList.contains('selected')) {
+                el.style.borderColor = 'var(--ficde-naranja)';
+                el.querySelector('.check-box').style.background = 'var(--ficde-naranja)';
+                el.querySelector('.check-box').style.borderColor = 'var(--ficde-naranja)';
+                el.querySelector('.check-box').style.color = 'white';
+            } else {
+                el.style.borderColor = 'transparent';
+                el.querySelector('.check-box').style.background = 'transparent';
+                el.querySelector('.check-box').style.borderColor = '#ccc';
+            }
+
+            playSound('click');
+        }
+
+        function validate() {
+            const data = modules[currentModule][currentIndex];
+            const feedback = document.getElementById('feedback');
+            let isCorrect = false;
+
+            if (data.type === 'text') {
+                const val = document.getElementById('txtInput').value;
+                isCorrect = data.validation(val);
+            } else if (data.type === 'blanks') {
+                const inputs = document.querySelectorAll('.fill-input');
+                let hits = 0;
+                inputs.forEach(inp => {
+                    const v = normalizar(inp.value);
+                    const ans = normalizar(inp.dataset.ans);
+                    if (v.length > 1 && ans.startsWith(v.slice(0, Math.max(2, Math.min(v.length, ans.length))))) hits++;
+                });
+                isCorrect = (hits === data.blanks.length);
+            } else if (data.type === 'traffic') {
+                let hits = 0;
+                data.items.forEach((item, i) => { if (trafficAns[i] === item.color) hits++; });
+                isCorrect = (hits === data.items.length);
+            } else if (data.type === 'checklist') {
+                let correct = true;
+                document.querySelectorAll('.checklist-item').forEach(item => {
+                    const sel = item.classList.contains('selected');
+                    const should = item.dataset.correct === 'true';
+                    if (sel !== should) correct = false;
+                });
+                isCorrect = correct;
+            }
+
+            feedback.style.display = 'block';
+
+            if (isCorrect) {
+                playAudio('correcto');
+                playSound('success');
+                feedback.className = 'feedback-area feedback-success';
+                feedback.innerHTML = `<strong>¡Muy bien!</strong><br>${data.explanation}`;
+                document.getElementById('btnCheck').innerText = 'Siguiente pregunta →';
+                document.getElementById('btnCheck').onclick = () => { currentIndex++; loadActivity(); };
+            } else {
+                attemptCount++;
+
+                if (attemptCount < 2) {
+                    playAudio('error1');
+                    feedback.className = 'feedback-area feedback-retry';
+                    feedback.innerHTML = `<strong>Buen intento.</strong> Revisá tu respuesta. Pista: ${data.tutor}`;
+                } else {
+                    playAudio('error2');
+                    feedback.className = 'feedback-area feedback-fail';
+                    feedback.innerHTML = `<strong>No pasa nada, aprendamos juntos:</strong><br>${data.explanation}`;
+                    document.getElementById('btnCheck').innerText = 'Entendido, continuar →';
+                    document.getElementById('btnCheck').onclick = () => { currentIndex++; loadActivity(); };
+                }
+            }
+        }
+
+        function replayTutorMessage() {
+            // Replay del último audio de módulo reproducido
+            if (lastAudioModule) {
+                const audioKey = moduloAudioMap[lastAudioModule];
+                if (audioKey) {
+                    playAudio(audioKey);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
