@@ -513,8 +513,8 @@ const modules = {
                 const v = normalizar(raw);
                 let c = 0;
                 if (v.includes('plataformas') || v.includes('digitales')) c++;
-                if (v.includes('conexión') || v.includes('interacción')) c++;
-                if (v.includes('información') || v.includes('sociales') || v.includes('interactuar')) c++;
+                if (v.includes('permiten') || v.includes('personas')) c++;
+                if (v.includes('informa') || v.includes('sociales') || v.includes('interactuar')) c++;
                 return c >= 2;
             },
             tutor: 'Pensá en qué tienen en común las personas cuando usan una red social.',
@@ -528,9 +528,9 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 let c = 0;
-                if (v.includes('concepto')) c++;
-                if (v.includes('amplio') || v.includes('tecnologías')) c++;
-                if (v.includes('digitales') || v.includes('formatos') || v.includes('interactivos')) c++;
+                if (v.includes('social')) c++;
+                if (v.includes('media') || v.includes('tecnolog')) c++;
+                if (v.includes('digitales') || v.includes('espacios') || v.includes('interactivos')) c++;
                 return c >= 2;
             },
             tutor: 'Uno de los conceptos incluye al otro.',
@@ -558,9 +558,9 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 let c = 0;
-                if (v.includes('comunicación') || v.includes('información')) c++;
-                if (v.includes('hábitos') || v.includes('digitales')) c++;
-                if (v.includes('cotidiana') || v.includes('información') || v.includes('entretenerse') || v.includes('mantenerse')) c++;
+                if (v.includes('redes') || v.includes('sociales')) c++;
+                if (v.includes('comunicarse') || v.includes('digitales')) c++;
+                if (v.includes('cotidiana') || v.includes('informa') || v.includes('entretenerse') || v.includes('mantenerse')) c++;
                 return c >= 2;
             },
             tutor: 'Piensa en cuántas veces al día se usan.',
@@ -586,8 +586,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('personales') || v.includes('profesionales')) &&
-                    (v.includes('entretenimiento') || v.includes('orientadas') || v.includes('construcción') || v.includes('identidad'))
+                    (v.includes('personales') || v.includes('cotidianos')) &&
+                    (v.includes('entretenimiento') || v.includes('orientadas') || v.includes('profesional') || v.includes('identidad'))
                 );
             },
             tutor: 'Piensa para qué se usa cada tipo.',
@@ -616,7 +616,7 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 let c = 0;
-                if (v.includes('marca') || v.includes('público') || v.includes('comunicación')) c++;
+                if (v.includes('redes') || v.includes('sociales') || v.includes('marcas')) c++;
                 if (v.includes('importantes') || v.includes('marketing') || v.includes('visibilidad') || v.includes('relaciones')) c++;
                 return c >= 2;
             },
@@ -644,8 +644,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('síntesis') || v.includes('conceptos')) &&
-                    (v.includes('relevancia') || v.includes('plataformas') || v.includes('digitales'))
+                    (v.includes('permiten') || v.includes('interactuar')) &&
+                    (v.includes('personas') || v.includes('plataformas') || v.includes('digitales'))
                 );
             },
             tutor: 'Uní todo en un solo texto claro.',
@@ -663,8 +663,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('comunicación') || v.includes('beneficios')) &&
-                    (v.includes('riesgos') || v.includes('equilibrio') || v.includes('impacto') || v.includes('distracción') || v.includes('dependencia'))
+                    (v.includes('comunicac') || v.includes('positivo')) &&
+                    (v.includes('acceso') || v.includes('generar') || v.includes('impacto') || v.includes('contenidos') || v.includes('dependencia'))
                 );
             },
             tutor: 'Pensá tanto en lo que aporta como en los posibles problemas.',
@@ -678,9 +678,9 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('interacción') || v.includes('superficialidad') || v.includes('comunicación')) &&
-                    v.includes('real') &&
-                    (v.includes('profundos') || v.includes('influyen ') || v.includes('relaciones'))
+                    (v.includes('promueven') || v.includes('positiva') || v.includes('comunica')) &&
+                    v.includes('espacios') &&
+                    (v.includes('profundos') || v.includes('influyen') || v.includes('relaciones'))
                 );
             },
             tutor: 'Pensá en la diferencia entre cantidad y calidad.',
@@ -709,8 +709,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('comparación') || v.includes('imagen')) &&
-                    (v.includes('autoestima') || v.includes('percepción')) &&
+                    (v.includes('compara') || v.includes('redes')) &&
+                    (v.includes('autoestima') || v.includes('percep')) &&
                     (v.includes('seleccionado') || v.includes('comprende') || v.includes('constante'))
                 );
             },
@@ -737,8 +737,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('decisiones') || v.includes('límites')) &&
-                    (v.includes('responsabilidad') || v.includes('sociales') || v.includes('media') || v.includes('negativamente') || v.includes('interactúa'))
+                    (v.includes('beneficios') || v.includes('reflexionar')) &&
+                    (v.includes('aprovechar') || v.includes('sociales') || v.includes('media') || v.includes('negativamente') || v.includes('cotidiana'))
                 );
             },
             tutor: 'Pensá en el control que cada persona tiene sobre su uso.',
@@ -767,7 +767,7 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('selección') || v.includes('edición') || v.includes('apariencia')) &&
+                    (v.includes('sociales') || v.includes('seleccionados') || v.includes('editados')) &&
                     (v.includes('contenidos') || v.includes('interpretaciones') || v.includes('comparaciones') || v.includes('aspectos'))
                 );
             },
@@ -795,8 +795,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('reflexión') || v.includes('conciencia')) &&
-                    (v.includes('responsable') || v.includes('crítica') || v.includes('Comprender'))
+                    (v.includes('Desarrollar') || v.includes('aprovechar')) &&
+                    (v.includes('responsable') || v.includes('equilibrio') || v.includes('Comprender'))
                 );
             },
             tutor: 'Integra beneficios y cuidados en una sola idea.',
@@ -814,11 +814,11 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    v.includes('hábito') ||
+                    v.includes('consciente') ||
                     (
-                        (v.includes('frecuencia') || v.includes('conciencia') || v.includes('error')) &&
+                        (v.includes('frecuente') || v.includes('incorporado') || v.includes('error')) &&
                         (v.includes('redes') || v.includes('sociales') || v.includes('momentos')) &&
-                        (v.includes('propósito') || v.includes('automático') || v.includes('control') || v.includes('tiempo'))
+                        (v.includes('distintos') || v.includes('claro') || v.includes('control') || v.includes('tiempo'))
                     )
                 );
             },
@@ -846,8 +846,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('comparación') || v.includes('percepción')) &&
-                    (v.includes('autoestima') || v.includes('negativamente') || v.includes('seleccionados'))
+                    (v.includes('escenario') || v.includes('impactar')) &&
+                    (v.includes('autoestima') || v.includes('negativamente') || v.includes('realidad'))
                 );
             },
             tutor: 'Pensá en lo que se muestra y en lo que no se muestra.',
@@ -876,7 +876,7 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('comunicación') || v.includes('presencia') || v.includes('vínculos')) &&
+                    (v.includes('comunica') || v.includes('celular') || v.includes('vínculos')) &&
                     (v.includes('constante') || v.includes('familiares') || v.includes('personas'))
                 );
             },
@@ -904,8 +904,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('distracción') || v.includes('atención')) &&
-                    (v.includes('concentración') || v.includes('redes') || v.includes('sociales') || v.includes('calidad'))
+                    (v.includes('estudio') || v.includes('generar')) &&
+                    (v.includes('disminuir') || v.includes('calidad') || v.includes('sociales') || v.includes('rendimiento'))
                 );
             },
             tutor: 'Pensá en el impacto sobre el aprendizaje.',
@@ -935,8 +935,8 @@ const modules = {
                 const v = normalizar(raw);
                 return (
                     (v.includes('productividad') || v.includes('imagen')) &&
-                    (v.includes('responsabilidad') || v.includes('redes') || v.includes('comunicación')) &&
-                    (v.includes('sociales') || v.includes('laboral') || v.includes('imagenes'))
+                    (v.includes('inadecuado') || v.includes('redes') || v.includes('comunica')) &&
+                    (v.includes('sociales') || v.includes('laboral') || v.includes('tareas'))
                 );
             },
             tutor: 'Pensá en consecuencias profesionales.',
@@ -982,7 +982,7 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('hábitos') || v.includes('tiempo') || v.includes('rutina') || v.includes('sociales')) &&
+                    (v.includes('habitual') || v.includes('tiempo') || v.includes('pausas') || v.includes('sociales')) &&
                     (v.includes('dormir') || v.includes('Registrar') || v.includes('responsable') || v.includes('frecuencia'))
                 );
             },
@@ -997,7 +997,7 @@ const modules = {
         'Completá las frases.<br><br>' +
         '1. Un uso responsable de redes sociales implica establecer __________ claros.<br>' +
         '2. Tomar conciencia del __________ de uso ayuda a mejorar los hábitos digitales.<br>',
-    blanks: ['límites', 'tiempo'],
+    blanks: ['limit', 'tiempo'],
     tutor: 'Pensá en control y organización.',
     explanation: 'El uso responsable se basa en reconocer cuánto tiempo se dedica a las redes y en establecer límites que protejan el equilibrio personal.'
 },
@@ -1022,8 +1022,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('concentración') || v.includes('estrategia')) &&
-                    (v.includes('foco') || v.includes('posible') || v.includes('habitación') || v.includes('redes'))
+                    (v.includes('estudiar') || v.includes('estrategia')) &&
+                    (v.includes('silencio') || v.includes('posible') || v.includes('habita') || v.includes('interrupciones'))
                 );
             },
             tutor: 'Pensá en algo simple y posible.',
@@ -1052,8 +1052,8 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('responsabilidad') || v.includes('imagen') || v.includes('profesionalismo')) &&
-                    (v.includes('conducta') || v.includes('contenidos') || v.includes('percepción') || v.includes('profesional'))
+                    (v.includes('adecuada') || v.includes('imagen') || v.includes('publicados')) &&
+                    (v.includes('conducta') || v.includes('contenidos') || v.includes('laboral') || v.includes('profesional'))
                 );
             },
             tutor: 'Pensá en cómo impacta lo que se publica.',
@@ -1080,9 +1080,9 @@ const modules = {
             validation: (raw) => {
                 const v = normalizar(raw);
                 return (
-                    (v.includes('uso') || v.includes('redes') || v.includes('imágen')) &&
-                    (v.includes('desempeño') || v.includes('moderado ') || v.includes('sociales')) &&
-                    (v.includes('imagen') || v.includes('desempeño') || v.includes('laboral'))
+                    (v.includes('uso') || v.includes('redes') || v.includes('consciente')) &&
+                    (v.includes('profesional') || v.includes('moderado ') || v.includes('sociales')) &&
+                    (v.includes('imagen') || v.includes('desempe') || v.includes('laboral'))
                 );
             },
             tutor: 'Pensá en límites y consecuencias.',
